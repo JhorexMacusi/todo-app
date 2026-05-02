@@ -37,4 +37,6 @@ router.post("/login", async (req, res) => {
       teamName: user.teamId?.name || null
     }
   });
+});
+
 export default router;
