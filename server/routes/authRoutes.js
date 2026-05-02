@@ -17,7 +17,7 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const user = await User.findOne({ email: req.body.email });
+  const user = await User.findOne({ email: req.body.email }).populate("teamId");
 
   if (!user) return res.status(400).json("User not found");
 
@@ -30,7 +30,11 @@ router.post("/login", async (req, res) => {
     "secretkey"
   );
 
-  res.json({ token, user });
-});
-
+  res.json({
+    token,
+    user: {
+      ...user._doc,
+      teamName: user.teamId?.name || null
+    }
+  });
 export default router;
