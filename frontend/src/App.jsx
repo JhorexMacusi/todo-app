@@ -5,15 +5,21 @@ import Dashboard from "./pages/Dashboard";
 
 function App() {
   const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user"));
 
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+
       <Route
         path="/dashboard"
-        element={token ? <Dashboard /> : <Navigate to="/login" />}
+        element={
+          token
+            ? <Dashboard user={user} />
+            : <Navigate to="/login" />
+        }
       />
     </Routes>
   );

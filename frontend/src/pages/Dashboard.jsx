@@ -4,58 +4,74 @@ import axios from "axios";
 const API = "https://todo-app-aoe6.onrender.com";
 
 function Dashboard() {
-  const [todos, setTodos] = useState([]);
-  const [text, setText] = useState("");
+  const [tasks, setTasks] = useState([]);
+  const [title, setTitle] = useState("");
 
-  const fetchTodos = async () => {
-    const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = localStorage.getItem("token");
 
-    const res = await axios.get(`${API}/todos`, {
-      headers: { Authorization: token },
-    });
-
-    setTodos(res.data);
-  };
-
-  const addTodo = async () => {
-    const token = localStorage.getItem("token");
-
-    await axios.post(
-      `${API}/todos`,
-      { text, completed: false },
-      { headers: { Authorization: token } }
+  // GET TASKS (based on user)
+  const fetchTasks = async () => {
+    const res = await axios.get(
+      `${API}/tasks/user/${user._id}`,
+      {
+        headers: { Authorization: token }
+      }
     );
 
-    setText("");
-    fetchTodos();
+    setTasks(res.data);
   };
 
-  const deleteTodo = async (id) => {
-    const token = localStorage.getItem("token");
+  // CREATE TASK (only manager/admin later)
+  const addTask = async () => {
+    await axios.post(
+      `${API}/tasks`,
+      {
+        title,
+        assignedTo: user._id,
+        createdBy: user._id,
+        companyId: user.companyId,
+      },
+      {
+        headers: { Authorization: token }
+      }
+    );
 
-    await axios.delete(`${API}/todos/${id}`, {
-      headers: { Authorization: token },
+    setTitle("");
+    fetchTasks();
+  };
+
+  // DELETE TASK
+  const deleteTask = async (id) => {
+    await axios.delete(`${API}/tasks/${id}`, {
+      headers: { Authorization: token }
     });
 
-    fetchTodos();
+    fetchTasks();
   };
 
   useEffect(() => {
-    fetchTodos();
+    fetchTasks();
   }, []);
 
   return (
     <div>
       <h1>Dashboard</h1>
+      <h3>Role: {user.role}</h3>
 
-      <input value={text} onChange={(e) => setText(e.target.value)} />
-      <button onClick={addTodo}>Add</button>
+      <input
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="New Task"
+      />
+
+      <button onClick={addTask}>Add Task</button>
 
       <ul>
-        {todos.map(todo => (
-          <li key={todo._id}>
-            {todo.text}
-            <button onClick={() => deleteTodo(todo._id)}>X</button>
+        {tasks.map(task => (
+          <li key={task._id}>
+            {task.title}
+            <button onClick={() => deleteTask(task._id)}>X</button>
           </li>
         ))}
       </ul>
