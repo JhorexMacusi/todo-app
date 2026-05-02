@@ -4,6 +4,12 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useAuth } from "./context/AuthContext";
+import CreateTeam from "./pages/CreateTeam";
+import JoinTeam from "./pages/JoinTeam";
+import MyTask from "./pages/MyTask";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
+import HomeDashboard from "./pages/HomeDashboard";
 
 function App() {
   const { user } = useAuth();
@@ -21,6 +27,15 @@ function App() {
         path="/register"
         element={user ? <Navigate to="/dashboard" replace /> : <Register />}
       />
+
+      <Route path="/dashboard" element={<Dashboard />}>
+          <Route index element={<HomeDashboard />} />
+          <Route path="create-team" element={<CreateTeam />} />
+          <Route path="join-team" element={<JoinTeam />} />
+          <Route path="mytask" element={<MyTask />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
 
       <Route
         path="/dashboard"

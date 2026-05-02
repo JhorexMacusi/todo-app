@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-
+import teamRoutes from "./routes/teamRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
 
@@ -20,6 +20,7 @@ mongoose.connect(process.env.MONGO_URI)
 // ROUTES
 app.use("/auth", authRoutes);
 app.use("/tasks", taskRoutes);
+app.use("/teams", teamRoutes);
 
 app.get("/", (req, res) => {
   res.send("Task Manager API Running 🚀");
