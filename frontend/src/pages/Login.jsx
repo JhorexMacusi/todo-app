@@ -17,9 +17,11 @@ function Login() {
       });
 
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
       navigate("/dashboard");
     } catch (err) {
-      alert("Login failed");
+      alert(err.response?.data || "Login failed");
     }
   };
 
@@ -28,6 +30,7 @@ function Login() {
       <h1>Login</h1>
 
       <input
+        type="email"
         placeholder="Email"
         onChange={(e) => setEmail(e.target.value)}
       />
