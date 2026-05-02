@@ -26,7 +26,7 @@ function Register() {
       });
 
       alert("Account created successfully!");
-      navigate("/login");
+      navigate("/login", { replace: true });
 
     } catch (err) {
       alert(
@@ -38,7 +38,7 @@ function Register() {
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>Register</h1>
 
       <input
@@ -55,7 +55,7 @@ function Register() {
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <button onClick={handleRegister} disabled={loading}>
+      <button id="login" onClick={handleRegister} disabled={loading}>
         {loading ? "Creating..." : "Register"}
       </button>
 

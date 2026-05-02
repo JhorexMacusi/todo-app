@@ -1,28 +1,47 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import DashboardLayout from "../components/layouts/DashboardLayout";
 
 const API = "https://todo-app-aoe6.onrender.com";
 
 function Dashboard() {
+  const navigate = useNavigate();
+
+  const { user, token, logout, loading } = useAuth();
+
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
 
-  const user = JSON.parse(localStorage.getItem("user"));
-  const token = localStorage.getItem("token");
+  // 🔒 loading state
+  if (loading) return <h2>Loading...</h2>;
 
-  // GET TASKS (based on user)
+  // 🔒 auth guard
+  if (!user || !token) {
+    return <h2>Please login</h2>;
+  }
+
   const fetchTasks = async () => {
     const res = await axios.get(
       `${API}/tasks/user/${user._id}`,
       {
-        headers: { Authorization: token }
+        headers: { Authorization: token },
       }
     );
 
     setTasks(res.data);
   };
 
-  // CREATE TASK (only manager/admin later)
+  useEffect(() => {
+    if (user?._id) fetchTasks();
+  }, [user]);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login", { replace: true });
+  };
+
   const addTask = async () => {
     await axios.post(
       `${API}/tasks`,
@@ -33,7 +52,7 @@ function Dashboard() {
         companyId: user.companyId,
       },
       {
-        headers: { Authorization: token }
+        headers: { Authorization: token },
       }
     );
 
@@ -41,41 +60,18 @@ function Dashboard() {
     fetchTasks();
   };
 
-  // DELETE TASK
   const deleteTask = async (id) => {
     await axios.delete(`${API}/tasks/${id}`, {
-      headers: { Authorization: token }
+      headers: { Authorization: token },
     });
 
     fetchTasks();
   };
 
-  useEffect(() => {
-    fetchTasks();
-  }, []);
-
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <h3>Role: {user.role}</h3>
-
-      <input
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="New Task"
-      />
-
-      <button onClick={addTask}>Add Task</button>
-
-      <ul>
-        {tasks.map(task => (
-          <li key={task._id}>
-            {task.title}
-            <button onClick={() => deleteTask(task._id)}>X</button>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <DashboardLayout>
+        Dashboard
+    </DashboardLayout>
   );
 }
 
