@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const API = "https://todo-app-aoe6.onrender.com/todos";
+const API = "https://todo-app-aoe6.onrender.com";
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [text, setText] = useState("");
 
   const fetchTodos = async () => {
-    const res = await axios.get(`${API}/todos`);
-    setTodos(res.data);
+    try {
+      const res = await axios.get(`${API}/todos`);
+      setTodos(res.data);
+    } catch (err) {
+      console.log("GET error:", err);
+    }
   };
 
   const addTodo = async () => {
