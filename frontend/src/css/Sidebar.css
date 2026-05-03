@@ -1,68 +1,94 @@
 .sidebar {
-    width: 240px;
-    height: 100vh;
-    background: #111827;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    position: sticky;
-    top: 0;
-  }
-  
-  .sidebar h2 {
-    font-size: 18px;
-    margin-bottom: 20px;
-  }
-  
-  .user-info {
-    margin-bottom: 20px;
-    font-size: 14px;
-    opacity: 0.9;
-  }
-  
-  .role {
-    display: inline-block;
-    margin-top: 5px;
-    font-size: 12px;
-    padding: 3px 8px;
-    background: #4f46e5;
-    border-radius: 5px;
-  }
-  
-  .menu {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  
-  .menu a {
-    color: white;
-    text-decoration: none;
-    padding: 8px;
-    border-radius: 6px;
-    transition: 0.2s;
-  }
-  
-  .menu a:hover {
-    background: #374151;
-  }
-  
-  .menu a.active {
-    background: #4f46e5;
-  }
-  
-  .logout-btn {
-    margin-top: auto;
-    padding: 10px;
-    background: #ef4444;
-    border: none;
-    color: white;
-    cursor: pointer;
-    border-radius: 6px;
-  }
-  
-  .logout-btn:hover {
-    background: #dc2626;
-  }
+  width: 280px;
+  height: 90vh;
+  background: #ffffff;          /* white background */
+  color: black;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  position: sticky;
+  top: 0;
+  transition: 0.3s ease;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* soft shadow */
+}
+
+.sidebar {
+  position: relative;
+}
+
+/* COLLAPSED MODE */
+.sidebar.collapsed {
+  width: 70px;
+}
+
+/* TOGGLE BUTTON - TOP RIGHT */
+.toggle-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  background: transparent;
+  border: none;
+  color: black;
+  font-size: 20px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* USER INFO */
+.user-info {
+  margin-top: 50px;
+  font-size: 30px;
+  word-break: break-word;   /* forces long email/name to wrap */
+  overflow-wrap: break-word;
+  align-items: center;   /* horizontal center */
+  justify-content: center;
+  text-align: center;
+}
+
+/* ROLE TAG */
+.role {
+  display: inline-block;
+  margin-top: 5px;
+  font-size: 25px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  color: #111;
+}
+
+/* MENU */
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  flex: 1;
+  margin-top: 50px;
+}
+
+.menu a {
+  color: black;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 8px;
+  transition: 0.2s;
+  text-align: center;
+  font-size: 25px;
+}
+
+.menu a:hover {
+  background: #374151;
+}
+
+/* LOGOUT */
+.logout-btn {
+  margin-top: auto;
+  padding: 10px;
+  background: blue;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 8px;
+}

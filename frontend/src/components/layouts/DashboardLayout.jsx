@@ -15,13 +15,19 @@ function DashboardLayout({ children }) {
     <div style={styles.wrapper}>
       {/* HEADER */}
       <header style={styles.header}>
-        <h2>Task Manager</h2>
+  <div style={styles.logoContainer}>
+    <svg width="40" height="40" viewBox="0 0 60 60" fill="none">
+      <rect width="60" height="60" rx="12" fill="#4F46E5" />
 
-        <div style={styles.right}>
-          <span>Role: {user?.role}</span>
-          <button onClick={handleLogout}>Logout</button>
-        </div>
-      </header>
+      <path d="M22 20L14 30L22 40" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M38 20L46 30L38 40" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+
+      <path d="M25 32L28 36L35 26" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+
+    <h2 style={styles.logoText}>DevTasks</h2>
+  </div>
+</header>
 
       {/* BODY */}
       <div style={styles.body}>
@@ -38,19 +44,38 @@ function DashboardLayout({ children }) {
 }
 
 const styles = {
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    padding: "12px 20px",
+    background: "#ffffff",
+    alignItems: "center",
+    borderBottom: "1px solid #e5e7eb",
+    boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
+    position: "sticky",
+    top: 0,
+    zIndex: 1000,
+  },
+  
+  logoContainer: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+  },
+  
+  logoText: {
+    margin: 0,
+    fontSize: "20px",
+    fontWeight: "700",
+    color: "#111827",
+    letterSpacing: "0.5px",
+  },
+
   wrapper: {
     minHeight: "100vh",
     background: "#f4f6f9",
     display: "flex",
     flexDirection: "column",
-  },
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    padding: "15px 20px",
-    background: "#4f46e5",
-    color: "white",
-    alignItems: "center",
   },
   right: {
     display: "flex",

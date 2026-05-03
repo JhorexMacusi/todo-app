@@ -25,4 +25,30 @@ router.post("/create", async (req, res) => {
   }
 });
 
+// GET ALL TEAMS
+router.get("/", async (req, res) => {
+    const teams = await Team.find();
+    res.json(teams);
+  });
+  
+  // JOIN TEAM
+  router.post("/join", async (req, res) => {
+    const { teamId, userId } = req.body;
+  
+    const team = await Team.findById(teamId);
+  
+    if (!team) return res.status(404).json("Team not found");
+  
+    await User.findByIdAndUpdate(userId, {
+      teamId: team._id
+    });
+  
+    if (!team.members.includes(userId)) {
+      team.members.push(userId);
+      await team.save();
+    }
+  
+    res.json({ message: "Joined team successfully" });
+  });
+
 export default router;

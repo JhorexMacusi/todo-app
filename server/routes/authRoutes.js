@@ -17,7 +17,7 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const user = await User.findOne({ email: req.body.email }).populate("teamId");
+  const user = await User.findOne({ email: req.body.email });
 
   if (!user) return res.status(400).json("User not found");
 
@@ -34,9 +34,37 @@ router.post("/login", async (req, res) => {
     token,
     user: {
       ...user._doc,
+      teamId: user.teamId?._id || null,
       teamName: user.teamId?.name || null
     }
   });
+});
+
+// GET CURRENT USER (UPDATED)
+router.get("/me", async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+
+    if (!token) {
+      return res.status(401).json("No token");
+    }
+
+    const decoded = jwt.verify(token, "secretkey");
+
+    const user = await User.findById(decoded.id).populate("teamId");
+
+    if (!user) {
+      return res.status(404).json("User not found");
+    }
+
+    res.json({
+      ...user._doc,
+      teamId: user.teamId?._id || null,
+      teamName: user.teamId?.name || null
+    });
+  } catch (err) {
+    res.status(500).json(err.message);
+  }
 });
 
 export default router;
