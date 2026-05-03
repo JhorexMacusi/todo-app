@@ -10,7 +10,9 @@ function ManageTeam() {
 
   const fetchTeam = async () => {
     try {
-      const teamId = user?.teamId?._id || user?.teamId;
+        const teamId = typeof user?.teamId === "object"
+        ? user.teamId?._id
+        : user?.teamId;
   
       const res = await axios.get(`${API}/teams/${teamId}`);
       setTeam(res.data);

@@ -51,4 +51,17 @@ router.get("/", async (req, res) => {
     res.json({ message: "Joined team successfully" });
   });
 
+  router.get("/:teamId", async (req, res) => {
+    try {
+      const team = await Team.findById(req.params.teamId)
+        .populate("members", "email role");
+  
+      if (!team) return res.status(404).json("Team not found");
+  
+      res.json(team);
+    } catch (err) {
+      res.status(500).json(err.message);
+    }
+  });
+
 export default router;
